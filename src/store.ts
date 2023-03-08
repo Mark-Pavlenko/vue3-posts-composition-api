@@ -1,6 +1,6 @@
 import { reactive, readonly } from 'vue'
 import axios from 'axios'
-import { Post } from '@/mocks'
+import { Post, today, thisMonth, thisWeek } from '@/mocks'
 
 interface PostsState {
   ids: string[],
@@ -19,6 +19,7 @@ class Store {
   }
 
   getMockPosts () {
+    console.log('this.state', this.state)
     return readonly(this.state)
   }
 
@@ -39,10 +40,15 @@ class Store {
   }
 }
 
+const all = new Map<string, Post>()
+all.set(today.id, today)
+all.set(thisWeek.id, thisWeek)
+all.set(thisMonth.id, thisMonth)
+
 const store = new Store({
   posts: {
-    all: new Map(),
-    ids: [],
+    all,
+    ids: [today.id, thisWeek.id, thisMonth.id],
     loaded: false
   }
 })
