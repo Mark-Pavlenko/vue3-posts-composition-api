@@ -4,16 +4,24 @@
       <a v-for="(period, index) in periods"
          :key="index"
          :class="{'is-active' : period === currentPeriod }"
-         @click="setPeriod(period)"> {{period}}
+         @click="setPeriod(period)"> {{ period }}
       </a>
     </span>
-<!--    {{currentPeriod}}-->
+    <a
+      v-for="post in posts"
+      :key="post.id"
+      class="panel-block"
+    >
+      <a>{{ post.title }}</a>
+      <div>{{ post.created.format('Do MMM') }}</div>
+    </a>
   </nav>
-    <h1>Timeline</h1>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, computed } from 'vue'
+import moment from 'moment'
+import { today, thisWeek, thisMonth } from '@/mocks'
 
 type Period = 'Today' | 'This week' | 'This month';
 
@@ -23,10 +31,24 @@ export default defineComponent({
     msg: String
   },
   setup (props) {
-    const periods = ['Today', 'This week', 'This month']
     console.log('props object', props)
-
+    const periods = ['Today', 'This week', 'This month']
     const currentPeriod = ref<Period>('Today')
+
+    const posts = computed(() => {
+      return [today, thisWeek, thisMonth].filter(post => {
+        if (currentPeriod.value === 'Today') {
+          return post.created.isAfter(moment().subtract(1, 'day'))
+        }
+        if (currentPeriod.value === 'This week') {
+          return post.created.isAfter(moment().subtract(1, 'week'))
+        }
+        if (currentPeriod.value === 'This month') {
+          return post.created.isAfter(moment().subtract(1, 'month'))
+        }
+        return false
+      })
+    })
 
     const setPeriod = (period: Period) => {
       currentPeriod.value = period
@@ -36,7 +58,8 @@ export default defineComponent({
     return {
       periods,
       setPeriod,
-      currentPeriod
+      currentPeriod,
+      posts
     }
   }
 })
