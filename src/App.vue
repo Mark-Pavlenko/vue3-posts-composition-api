@@ -1,7 +1,15 @@
 <template>
   <section class="section">
     <div class="container">
-      <TimeLine :msg="this.msg"/>
+      <suspense>
+        <template #default>
+          <TimeLine :msg="this.msg"/>
+        </template>
+        <template #fallback>
+         <SpinnerComponent/>
+        </template>
+      </suspense>
+
     </div>
   </section>
 
@@ -9,17 +17,19 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import TimeLine from './components/Timeline.vue'
+import TimeLine from '@/components/Timeline.vue'
+import SpinnerComponent from '@/components/Spinner.vue'
 
 export default defineComponent({
   name: 'App',
+  components: {
+    TimeLine,
+    SpinnerComponent
+  },
   data () {
     return {
       msg: 'Welcome to Your Vue.js + TypeScript App'
     }
-  },
-  components: {
-    TimeLine
   }
 })
 </script>

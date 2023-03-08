@@ -24,6 +24,13 @@ import TimeLinePost from '@/components/TimeLinePost.vue'
 
 type Period = 'Today' | 'This week' | 'This month';
 
+function delay () {
+  // eslint-disable-next-line promise/param-names
+  return new Promise(res => {
+    setTimeout(res, 2000)
+  })
+}
+
 export default defineComponent({
   name: 'TimeLine',
   props: {
@@ -32,8 +39,9 @@ export default defineComponent({
   components: {
     TimeLinePost
   },
-  setup (props) {
+  async setup (props) {
     console.log('props object', props)
+    await delay()
     const periods = ['Today', 'This week', 'This month']
     const currentPeriod = ref<Period>('Today')
 
