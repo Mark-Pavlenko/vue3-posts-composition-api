@@ -4,6 +4,7 @@
       <a v-for="(period, index) in periods"
          :key="index"
          :class="{'is-active' : period === currentPeriod }"
+         :data-test="period"
          @click="setPeriod(period)"> {{ period }}
       </a>
     </span>
