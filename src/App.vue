@@ -1,7 +1,7 @@
 <template>
   <section class="section">
     <div class="container">
-      <TimeLine />
+      <TimeLine :msg="this.msg"/>
     </div>
   </section>
 
@@ -13,6 +13,11 @@ import TimeLine from './components/Timeline.vue'
 
 export default defineComponent({
   name: 'App',
+  data () {
+    return {
+      msg: 'Welcome to Your Vue.js + TypeScript App'
+    }
+  },
   components: {
     TimeLine
   }
