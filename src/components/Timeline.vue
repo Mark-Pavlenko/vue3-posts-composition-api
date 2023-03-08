@@ -8,14 +8,11 @@
          @click="setPeriod(period)"> {{ period }}
       </a>
     </span>
-    <a
+    <time-line-post
       v-for="post in posts"
       :key="post.id"
-      class="panel-block"
-    >
-      <a>{{ post.title }}</a>
-      <div>{{ post.created.format('Do MMM') }}</div>
-    </a>
+      :post="post"
+      class="panel-block"/>
   </nav>
 </template>
 
@@ -23,6 +20,7 @@
 import { defineComponent, ref, computed } from 'vue'
 import moment from 'moment'
 import { today, thisWeek, thisMonth } from '@/mocks'
+import TimeLinePost from '@/components/TimeLinePost.vue'
 
 type Period = 'Today' | 'This week' | 'This month';
 
@@ -30,6 +28,9 @@ export default defineComponent({
   name: 'TimeLine',
   props: {
     msg: String
+  },
+  components: {
+    TimeLinePost
   },
   setup (props) {
     console.log('props object', props)
