@@ -24,6 +24,7 @@ import { defineComponent, ref, onMounted, watch, watchEffect } from 'vue'
 import { Post } from '@/mocks'
 import { marked } from 'marked'
 import highlight from 'highlight.js'
+import { debounce } from 'lodash'
 
 export default defineComponent({
   name: 'PostWriter',
@@ -38,16 +39,17 @@ export default defineComponent({
     const content = ref('## Title \nEnter your post content...')
     const html = ref('')
 
-    // called once after component creation and every time when element changed
-    watchEffect(() => {
-      html.value = marked.parse(content.value, {
+    const parseHtml = (str: string) => {
+      html.value = marked.parse(str, {
         gfm: true,
         breaks: true,
         highlight (code: string) {
           return highlight.highlightAuto(code).value
         }
       })
-    })
+    }
+
+    watch(content, debounce(parseHtml, 250), { immediate: true })
 
     // called every time when element was changed
     // watch(content, (newContent) => {
