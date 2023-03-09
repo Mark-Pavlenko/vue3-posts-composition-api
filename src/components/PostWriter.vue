@@ -23,6 +23,7 @@
 import { defineComponent, ref, onMounted, watch, watchEffect } from 'vue'
 import { Post } from '@/mocks'
 import { marked } from 'marked'
+import highlight from 'highlight.js'
 
 export default defineComponent({
   name: 'PostWriter',
@@ -39,7 +40,13 @@ export default defineComponent({
 
     // called once after component creation and every time when element changed
     watchEffect(() => {
-      html.value = marked.parse(content.value)
+      html.value = marked.parse(content.value, {
+        gfm: true,
+        breaks: true,
+        highlight (code: string) {
+          return highlight.highlightAuto(code).value
+        }
+      })
     })
 
     // called every time when element was changed
@@ -57,14 +64,14 @@ export default defineComponent({
         throw new Error('This can`t be!')
       }
 
-      content.value = contentEditable.value?.textContent || ''
+      content.value = contentEditable.value?.innerText || ''
     }
 
     onMounted(() => {
       if (!contentEditable.value) {
         throw new Error('This can`t be!')
       }
-      contentEditable.value.textContent = content.value
+      contentEditable.value.innerText = content.value
     })
 
     return {
@@ -79,4 +86,7 @@ export default defineComponent({
 </script>
 
 <style scoped>
+.column{
+  overflow-y: scroll;
+}
 </style>
