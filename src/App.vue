@@ -1,15 +1,8 @@
 <template>
   <section class="section">
     <div class="container">
-      <suspense>
-        <template #default>
-          <TimeLine :msg="this.msg"/>
-        </template>
-        <template #fallback>
-         <SpinnerComponent/>
-        </template>
-      </suspense>
-
+      <NavBar/>
+      <router-view />
     </div>
   </section>
 
@@ -17,19 +10,12 @@
 
 <script lang="ts">
 import { defineComponent } from 'vue'
-import TimeLine from '@/components/Timeline.vue'
-import SpinnerComponent from '@/components/Spinner.vue'
+import NavBar from '@/components/NavBar.vue'
 
 export default defineComponent({
   name: 'App',
   components: {
-    TimeLine,
-    SpinnerComponent
-  },
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js + TypeScript App'
-    }
+    NavBar
   }
 })
 </script>

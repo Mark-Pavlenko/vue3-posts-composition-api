@@ -42,7 +42,7 @@ export default defineComponent({
   },
   async setup () {
     // await delay()
-    const periods = ['Today', 'This week', 'This month']
+    const periods: Period[] = ['Today', 'This week', 'This month']
     const currentPeriod = ref<Period>('Today')
     const store = useStore()
 

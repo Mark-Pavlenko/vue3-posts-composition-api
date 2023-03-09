@@ -1,0 +1,45 @@
+<template>
+  <div class="columns">
+    <div class="column">
+      <div class="field">
+        <div class="label">New Post</div>
+        <input type="text" class="input" v-model="title" />
+        <div contenteditable ref="contentEditable" />
+      </div>
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, onMounted } from 'vue'
+import { Post } from '@/mocks'
+
+export default defineComponent({
+  name: 'PostWriter',
+  props: {
+    post: {
+      type: Object as () => Post,
+      required: true
+    }
+  },
+  setup (props) {
+    console.log('prop', props.post)
+    const title = ref(props.post.title)
+    const content = ref('')
+    const contentEditable = ref(null)
+
+    onMounted(() => {
+      console.log('contentEditable', contentEditable.value)
+    })
+
+    return {
+      title,
+      content,
+      contentEditable
+    }
+  }
+})
+</script>
+
+<style scoped>
+</style>
