@@ -4,10 +4,19 @@
       <div class="field">
         <div class="label">New Post</div>
         <input type="text" class="input" v-model="title" />
-        <div contenteditable ref="contentEditable" />
       </div>
     </div>
   </div>
+
+  <div class="columns">
+    <div class="column">
+      <div contenteditable ref="contentEditable" @input="handleInputData"/>
+    </div>
+    <div class="column">
+      {{content}}
+    </div>
+  </div>
+
 </template>
 
 <script lang="ts">
@@ -23,19 +32,30 @@ export default defineComponent({
     }
   },
   setup (props) {
-    console.log('prop', props.post)
     const title = ref(props.post.title)
-    const content = ref('')
-    const contentEditable = ref(null)
+    const content = ref('## Title \nEnter your post content...')
+    const contentEditable = ref<HTMLDivElement | null>(null)
+
+    const handleInputData = () => {
+      if (!contentEditable.value) {
+        throw new Error('This can`t be!')
+      }
+
+      content.value = contentEditable.value?.textContent || ''
+    }
 
     onMounted(() => {
-      console.log('contentEditable', contentEditable.value)
+      if (!contentEditable.value) {
+        throw new Error('This can`t be!')
+      }
+      contentEditable.value.textContent = content.value
     })
 
     return {
       title,
       content,
-      contentEditable
+      contentEditable,
+      handleInputData
     }
   }
 })
