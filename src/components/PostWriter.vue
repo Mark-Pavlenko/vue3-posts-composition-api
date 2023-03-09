@@ -13,15 +13,16 @@
       <div contenteditable ref="contentEditable" @input="handleInputData"/>
     </div>
     <div class="column">
-      {{content}}
+      <div v-html="html" />
     </div>
   </div>
 
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted } from 'vue'
+import { defineComponent, ref, onMounted, watch, watchEffect } from 'vue'
 import { Post } from '@/mocks'
+import { marked } from 'marked'
 
 export default defineComponent({
   name: 'PostWriter',
@@ -34,6 +35,21 @@ export default defineComponent({
   setup (props) {
     const title = ref(props.post.title)
     const content = ref('## Title \nEnter your post content...')
+    const html = ref('')
+
+    // called once after component creation and every time when element changed
+    watchEffect(() => {
+      html.value = marked.parse(content.value)
+    })
+
+    // called every time when element was changed
+    // watch(content, (newContent) => {
+    //   html.value = marked.parse(content.value)
+    // }, {
+    //   // called also once the component created
+    //   immediate: true
+    // })
+
     const contentEditable = ref<HTMLDivElement | null>(null)
 
     const handleInputData = () => {
@@ -52,6 +68,7 @@ export default defineComponent({
     })
 
     return {
+      html,
       title,
       content,
       contentEditable,
