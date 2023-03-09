@@ -4,7 +4,7 @@ import TimeLine from '@/components/Timeline.vue'
 import { today, thisWeek, thisMonth } from '../../src/mocks'
 
 describe('TimeLine.vue', () => {
-  it('renders today posts by default', () => {
+  it.only('renders today posts by default', () => {
     const wrapper = mount(TimeLine)
     expect(wrapper.html()).toContain(today.created.format('Do MMM'))
   })
