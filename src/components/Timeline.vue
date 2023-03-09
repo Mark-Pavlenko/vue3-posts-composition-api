@@ -25,12 +25,12 @@ import { useStore } from '@/store'
 
 type Period = 'Today' | 'This week' | 'This month';
 
-function delay () {
-  // eslint-disable-next-line promise/param-names
-  return new Promise(res => {
-    setTimeout(res, 2000)
-  })
-}
+// function delay () {
+//   // eslint-disable-next-line promise/param-names
+//   return new Promise(res => {
+//     setTimeout(res, 2000)
+//   })
+// }
 
 export default defineComponent({
   name: 'TimeLine',
@@ -40,13 +40,11 @@ export default defineComponent({
   components: {
     TimeLinePost
   },
-  async setup (props) {
-    await delay()
+  async setup () {
+    // await delay()
     const periods = ['Today', 'This week', 'This month']
     const currentPeriod = ref<Period>('Today')
     const store = useStore()
-
-    console.log('store.getMockPosts().posts.ids', store.getMockPosts().posts)
 
     const allPosts: Post[] = store.getMockPosts().posts.ids.reduce<Post[]>((acc, id) => {
       const thePost = store.getMockPosts().posts.all.get(id)
@@ -55,8 +53,6 @@ export default defineComponent({
       }
       return acc.concat(thePost)
     }, [])
-
-    // console.log('allPosts', allPosts)
 
     const posts = computed(() => {
       return allPosts.filter(post => {
@@ -75,7 +71,6 @@ export default defineComponent({
 
     const setPeriod = (period: Period) => {
       currentPeriod.value = period
-      console.log('setPeriod', currentPeriod.value)
     }
 
     return {

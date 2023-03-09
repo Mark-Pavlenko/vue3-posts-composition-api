@@ -19,7 +19,6 @@ class Store {
   }
 
   getMockPosts () {
-    console.log('this.state', this.state)
     return readonly(this.state)
   }
 

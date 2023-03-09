@@ -1,34 +1,58 @@
-// import { nextTick } from 'vue'
-import { mount } from '@vue/test-utils'
+import { mount, flushPromises } from '@vue/test-utils'
 import TimeLine from '@/components/Timeline.vue'
-import { today, thisWeek, thisMonth } from '../../src/mocks'
+import { today, thisWeek, thisMonth } from '@/mocks'
+
+jest.mock('axios', () => ({
+  get: (url: string) => {
+    return Promise.resolve({
+      data: [today, thisWeek, thisMonth]
+    })
+  }
+}))
+
+function mountTimeline () {
+  return mount({
+    components: { TimeLine },
+    template: `
+        <suspense>
+          <template #default>
+            <time-line/>
+          </template>
+          <template #fallback>
+            Loading...
+          </template>
+        </suspense>
+      `
+  })
+}
 
 describe('TimeLine.vue', () => {
-  it.only('renders today posts by default', () => {
-    const wrapper = mount(TimeLine)
+  it('renders today posts by default', async () => {
+    const wrapper = mountTimeline()
+
+    // nextTick -> Vue internal Promises
+    // axios - flushPromises
+    await flushPromises()
     expect(wrapper.html()).toContain(today.created.format('Do MMM'))
   })
 
   it('updates, when the period is clicked', async () => {
-    const wrapper = mount(TimeLine)
+    const wrapper = mountTimeline()
+    await flushPromises()
 
     // we should wait for the next frame
     await wrapper.get('[data-test="This week"]').trigger('click')
-
-    // await nextTick()
 
     expect(wrapper.html()).toContain(today.created.format('Do MMM'))
     expect(wrapper.html()).toContain(thisWeek.created.format('Do MMM'))
   })
 
   it('updates, when the period is clicked', async () => {
-    const wrapper = mount(TimeLine)
+    const wrapper = mountTimeline()
+    await flushPromises()
 
     // we should wait for the next frame
     await wrapper.get('[data-test="This month"]').trigger('click')
-
-    // or we can do it in such ways
-    // await nextTick()
 
     expect(wrapper.html()).toContain(today.created.format('Do MMM'))
     expect(wrapper.html()).toContain(thisWeek.created.format('Do MMM'))
