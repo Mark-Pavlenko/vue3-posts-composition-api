@@ -1,6 +1,12 @@
-import { reactive, readonly } from 'vue'
+import { reactive, readonly, provide, inject, App } from 'vue'
 import axios from 'axios'
 import { Post, today, thisMonth, thisWeek } from '@/mocks'
+
+export interface User {
+  id: string,
+  username: string,
+  password: string
+}
 
 interface PostsState {
   ids: string[],
@@ -11,11 +17,17 @@ interface State {
   posts: PostsState
 }
 
+export const storeKey = Symbol('store')
+
 class Store {
   state: State
 
   constructor (initial: State) {
     this.state = reactive(initial)
+  }
+
+  install (app: App) {
+    app.provide(storeKey, this)
   }
 
   getMockPosts () {
@@ -26,7 +38,6 @@ class Store {
     const response = await axios.post<Post>('/posts', post)
     this.state.posts.all.set(post.id, response.data)
     this.state.posts.ids.push(post.id)
-    console.log('this.state', this.state)
   }
 
   async fetchPosts () {
@@ -46,6 +57,13 @@ class Store {
     }
     this.state.posts = postsState
   }
+
+  async createUser (user: User) {
+    console.log('user', user)
+    // const response = await axios.post<User>('/posts', user)
+    // this.state.posts.all.set(post.id, response.data)
+    // this.state.posts.ids.push(post.id)
+  }
 }
 
 const all = new Map<string, Post>()
@@ -53,7 +71,7 @@ all.set(today.id, today)
 all.set(thisWeek.id, thisWeek)
 all.set(thisMonth.id, thisMonth)
 
-const store = new Store({
+export const store = new Store({
   posts: {
     all,
     ids: [today.id, thisWeek.id, thisMonth.id],
@@ -62,8 +80,12 @@ const store = new Store({
 })
 
 // providing injection
-export function useStore () {
-  return store
+export function useStore (): Store {
+  const _store = inject<Store>(storeKey)
+  if (!_store) {
+    throw Error('You have forgotten to call a provide')
+  }
+  return _store
 }
 
-// store.getState().posts.all
+// store.getState().posts.loaded

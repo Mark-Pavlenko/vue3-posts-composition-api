@@ -5,6 +5,7 @@ import 'highlight.js/styles/an-old-hope.css'
 import { random } from 'lodash'
 import { Post, thisMonth, thisWeek, today } from '@/mocks'
 import axios from 'axios'
+import { store, storeKey } from '@/store'
 
 function delay () {
   // eslint-disable-next-line promise/param-names
@@ -46,4 +47,5 @@ axios.post = async (url: string, payload: any) => {
 
 const app = createApp(App)
 app.use(router)
+app.use(store)
 app.mount('#app')
