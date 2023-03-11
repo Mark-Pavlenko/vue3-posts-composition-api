@@ -25,13 +25,6 @@ import { useStore } from '@/store'
 
 type Period = 'Today' | 'This week' | 'This month';
 
-// function delay () {
-//   // eslint-disable-next-line promise/param-names
-//   return new Promise(res => {
-//     setTimeout(res, 2000)
-//   })
-// }
-
 export default defineComponent({
   name: 'TimeLine',
   props: {
