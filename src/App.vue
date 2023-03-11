@@ -3,7 +3,6 @@
     <div class="modal-background"></div>
     <div class="modal-content">
       <div id="modal">
-        Here will be Modal content
       </div>
     </div>
     <button
@@ -14,8 +13,6 @@
 
   <section class="section">
     <div class="container">
-      <form-input v-model="username" name="Marko" type="text" error="There is an error"/>
-      {{ username }}
       <NavBar/>
       <router-view/>
     </div>
@@ -26,18 +23,15 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from 'vue'
 import NavBar from '@/components/NavBar.vue'
-import FormInput from '@/components/FornInput.vue'
 import { useModal } from '@/useModal'
 
 export default defineComponent({
   name: 'App',
   components: {
-    NavBar,
-    FormInput
+    NavBar
   },
   setup () {
     const modal = useModal()
-    const username = ref('Pavlenko')
 
     const style = computed(() => {
       return {
@@ -47,8 +41,7 @@ export default defineComponent({
 
     return {
       style,
-      modal,
-      username
+      modal
     }
   }
 })

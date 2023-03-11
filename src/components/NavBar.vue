@@ -11,16 +11,20 @@
   </div>
 
   <teleport to="#modal">
-    <div>Modal</div>
+    <SignUp/>
   </teleport>
 </template>
 
 <script lang="ts">
 import { useModal } from '@/useModal'
 import { defineComponent } from 'vue'
+import SignUp from '@/components/SignUp.vue'
 
 export default defineComponent({
   name: 'NavBar',
+  components: {
+    SignUp
+  },
   setup () {
     const modal = useModal()
     return {

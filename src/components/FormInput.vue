@@ -2,7 +2,7 @@
   <div class="field">
     <label class="label" :name="name">{{name}}</label>
     <div class="control">
-      <input class="input" :type="type" v-model="inputValue" @input="handleInput"/>
+      <input class="input" :type="type" :value="modelValue" @input="handleInput"/>
     </div>
     <p class="is-danger help">
       {{error}}
@@ -32,13 +32,7 @@ export default defineComponent({
       type: String
     }
   },
-  data () {
-    return {
-      inputValue: this.modelValue
-    }
-  },
   setup (props, context) {
-    console.log('context', context)
     const handleInput = (event: Event) => {
       context.emit('update:modelValue', (event.target as HTMLInputElement).value)
     }
