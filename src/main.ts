@@ -33,7 +33,10 @@ axios.post = async (url: string, payload: any) => {
     await delay()
     const post: Post = {
       ...payload,
-      id: id.toString()
+      id: id.toString(),
+      title: payload.title,
+      created: payload.created,
+      authorId: payload.authorId
     }
     return Promise.resolve<{ data: Post }>({
       data: post

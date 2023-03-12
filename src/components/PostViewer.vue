@@ -1,14 +1,20 @@
 <template>
-  <div>
-    <router-link
-      v-if="canEdit"
-      :to="to"
-      class="button is-link is-rounded"
-      data-test="can-edit"
-    >
-       Edit
-    </router-link>
-    {{post}}
+  <div class="columns">
+    <div class="column" />
+
+    <div class="column is-two-thirds">
+      <router-link
+        v-if="canEdit"
+        :to="to"
+        class="button is-link is-rounded"
+        data-test="can-edit"
+      >
+        Edit
+      </router-link>
+      <div v-html="post.html" />
+    </div>
+
+    <div class="column" />
   </div>
 </template>
 
@@ -28,7 +34,10 @@ export default defineComponent({
       await store.fetchPosts()
     }
 
+    console.log('postId', postId)
+    console.log(store.getState().posts.all)
     const post = store.getState().posts.all.get(postId)
+    console.log('post', post)
 
     if (!post) {
       throw Error('Post was not found!')
