@@ -17,11 +17,7 @@
     </div>
   </div>
 
-  <div class="columns">
-    <div class="column">
-      <button @click="save" class="button is-primary is-pulled-right">Submit</button>
-    </div>
-  </div>
+  <button @click="save" class="button is-primary is-pulled-right">Submit</button>
 
 </template>
 
@@ -97,8 +93,8 @@ export default defineComponent({
       }
 
       ctx.emit('save', newPost)
-    // 1. Creating post
-    // 2. Emitting an event
+      // 1. Creating post
+      // 2. Emitting an event
     }
 
     return {

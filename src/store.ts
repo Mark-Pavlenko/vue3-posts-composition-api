@@ -48,6 +48,7 @@ export class Store {
     const response = await axios.post<Post>('/posts', post)
     this.state.posts.all.set(post.id, response.data)
     this.state.posts.ids.push(post.id)
+    // console.log(this.state.posts)
   }
 
   async createUser (user: User) {
@@ -55,7 +56,7 @@ export class Store {
     this.state.authors.all.set(response.data.id, response.data)
     this.state.authors.ids.push(response.data.id)
     this.state.authors.currentUserId = response.data.id
-    console.log(this.state.authors)
+    // console.log(this.state.authors)
   }
 
   async fetchPosts () {

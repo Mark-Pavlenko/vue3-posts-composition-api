@@ -44,7 +44,7 @@ export default defineComponent({
       return !!store.state.authors.currentUserId
     })
 
-    console.log(SignUp)
+    // console.log(SignUp)
 
     const signIn = () => {
       // const Demo = defineComponent({
