@@ -93,8 +93,6 @@ export default defineComponent({
       }
 
       ctx.emit('save', newPost)
-      // 1. Creating post
-      // 2. Emitting an event
     }
 
     return {

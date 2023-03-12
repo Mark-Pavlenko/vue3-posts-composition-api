@@ -1,22 +1,17 @@
 <template>
-  <div>
-    <router-link :to="to">
-        <div>Edit</div>
-    </router-link>
-    Show post
-    {{post}}
-  </div>
+  Post editor
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from '@/store'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
-  name: 'PostViewer',
+  name: 'PostEditor',
   async setup () {
     const store = useStore()
+    const router = useRouter()
     const postId = useRoute().params.id as string
 
     if (!store.getState().posts.loaded) {
@@ -29,13 +24,16 @@ export default defineComponent({
       throw Error('Post was not found!')
     }
 
+    if (post.authorId !== store.getState().authors.currentUserId) {
+      await router.push('/')
+    }
+
+    console.log('post to edit', post)
+
     return {
-      post,
-      to: `/posts/${postId}/edit`
+      post
     }
   }
 })
-</script>
 
-<style scoped>
-</style>
+</script>
