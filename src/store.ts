@@ -19,7 +19,7 @@ interface State {
 
 export const storeKey = Symbol('store')
 
-class Store {
+export class Store {
   state: State
 
   constructor (initial: State) {
