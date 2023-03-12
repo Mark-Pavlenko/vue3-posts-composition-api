@@ -1,9 +1,12 @@
 <template>
   <div>
-    <router-link :to="to">
-        <div>Edit</div>
+    <router-link
+      v-if="canEdit"
+      :to="to"
+      class="button is-link is-rounded"
+    >
+       Edit
     </router-link>
-    Show post
     {{post}}
   </div>
 </template>
@@ -29,8 +32,11 @@ export default defineComponent({
       throw Error('Post was not found!')
     }
 
+    const canEdit = post.authorId === store.getState().authors.currentUserId
+
     return {
       post,
+      canEdit,
       to: `/posts/${postId}/edit`
     }
   }
