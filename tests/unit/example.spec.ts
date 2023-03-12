@@ -1,7 +1,7 @@
 import { mount, flushPromises } from '@vue/test-utils'
 import TimeLine from '@/components/Timeline.vue'
 import { today, thisWeek, thisMonth } from '@/mocks'
-import { Store } from '@/store'
+import {Author, Store} from '@/store'
 
 jest.mock('axios', () => ({
   get: (url: string) => {
@@ -13,6 +13,12 @@ jest.mock('axios', () => ({
 
 function mountTimeline () {
   const store = new Store({
+    authors: {
+      all: new Map<string, Author>(),
+      ids: [],
+      loaded: false,
+      currentUserId: undefined
+    },
     posts: {
       ids: [],
       all: new Map(),

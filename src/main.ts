@@ -5,7 +5,7 @@ import 'highlight.js/styles/an-old-hope.css'
 import { random } from 'lodash'
 import { Post, thisMonth, thisWeek, today } from '@/mocks'
 import axios from 'axios'
-import { store, storeKey } from '@/store'
+import { store, storeKey, User, Author } from '@/store'
 
 function delay () {
   // eslint-disable-next-line promise/param-names
@@ -41,6 +41,22 @@ axios.post = async (url: string, payload: any) => {
     }
     return Promise.resolve<{ data: Post }>({
       data: post
+    })
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+axios.post = async (url: string, user: User) => {
+  if (url === '/users') {
+    const id = random(100, 10000)
+    await delay()
+    const author: Author = {
+      id: id.toString(),
+      username: user.username
+    }
+    return Promise.resolve({
+      data: author
     })
   }
 }

@@ -8,12 +8,21 @@ export interface User {
   password: string
 }
 
-interface PostsState {
+export type Author = Omit<User, 'password'>
+
+interface BaseState<T> {
   ids: string[],
-  all: Map<string, Post>,
+  all: Map<string, T>,
   loaded: boolean
 }
+
+type PostsState = BaseState<Post>
+interface AuthorState extends BaseState<Author> {
+  currentUserId: string | undefined
+}
+
 interface State {
+  authors: AuthorState,
   posts: PostsState
 }
 
@@ -40,6 +49,14 @@ export class Store {
     this.state.posts.ids.push(post.id)
   }
 
+  async createUser (user: User) {
+    const response = await axios.post<Author>('/users', user)
+    this.state.authors.all.set(response.data.id, response.data)
+    this.state.authors.ids.push(response.data.id)
+    this.state.authors.currentUserId = response.data.id
+    console.log(this.state.authors)
+  }
+
   async fetchPosts () {
     const response = await axios.get<Post[]>('/posts')
 
@@ -57,13 +74,6 @@ export class Store {
     }
     this.state.posts = postsState
   }
-
-  async createUser (user: User) {
-    console.log('user', user)
-    // const response = await axios.post<User>('/posts', user)
-    // this.state.posts.all.set(post.id, response.data)
-    // this.state.posts.ids.push(post.id)
-  }
 }
 
 const all = new Map<string, Post>()
@@ -72,6 +82,12 @@ all.set(thisWeek.id, thisWeek)
 all.set(thisMonth.id, thisMonth)
 
 export const store = new Store({
+  authors: {
+    all: new Map<string, Author>(),
+    ids: [],
+    loaded: false,
+    currentUserId: undefined
+  },
   posts: {
     all,
     ids: [today.id, thisWeek.id, thisMonth.id],
@@ -87,5 +103,3 @@ export function useStore (): Store {
   }
   return _store
 }
-
-// store.getState().posts.loaded
