@@ -4,6 +4,7 @@
       v-if="canEdit"
       :to="to"
       class="button is-link is-rounded"
+      data-test="can-edit"
     >
        Edit
     </router-link>
@@ -14,12 +15,13 @@
 <script lang="ts">
 import { defineComponent } from 'vue'
 import { useStore } from '@/store'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 
 export default defineComponent({
   name: 'PostViewer',
   async setup () {
     const store = useStore()
+    const router = useRouter()
     const postId = useRoute().params.id as string
 
     if (!store.getState().posts.loaded) {
