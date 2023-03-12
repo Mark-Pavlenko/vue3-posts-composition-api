@@ -62,8 +62,6 @@ export class Store {
   async fetchPosts () {
     const response = await axios.get<Post[]>('/posts')
 
-    console.log('response', response)
-
     const postsState: PostsState = {
       ids: [],
       all: new Map(),
