@@ -39,8 +39,8 @@ export default defineComponent({
     const currentPeriod = ref<Period>('Today')
     const store = useStore()
 
-    const allPosts: Post[] = store.getMockPosts().posts.ids.reduce<Post[]>((acc, id) => {
-      const thePost = store.getMockPosts().posts.all.get(id)
+    const allPosts: Post[] = store.getState().posts.ids.reduce<Post[]>((acc, id) => {
+      const thePost = store.getState().posts.all.get(id)
       if (!thePost) {
         throw Error('The post was not found!')
       }

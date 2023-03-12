@@ -1,4 +1,4 @@
-import { reactive, readonly, provide, inject, App } from 'vue'
+import { reactive, readonly, inject, App } from 'vue'
 import axios from 'axios'
 import { Post, today, thisMonth, thisWeek } from '@/mocks'
 
@@ -39,7 +39,8 @@ export class Store {
     app.provide(storeKey, this)
   }
 
-  getMockPosts () {
+  getState () {
+    // console.log(this.state)
     return readonly(this.state)
   }
 

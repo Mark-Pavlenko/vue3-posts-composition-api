@@ -29,31 +29,23 @@ axios.get = async (url: string) => {
 // @ts-ignore
 axios.post = async (url: string, payload: any) => {
   if (url === '/posts') {
-    console.log('payload', payload)
     const id = random(100, 10000)
     await delay()
     const post: Post = {
       ...payload,
-      id: id.toString(),
-      title: payload.title,
-      created: payload.created,
-      authorId: payload.authorId
+      id: id.toString()
     }
     return Promise.resolve<{ data: Post }>({
       data: post
     })
   }
-}
 
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-axios.post = async (url: string, user: User) => {
   if (url === '/users') {
     const id = random(100, 10000)
     await delay()
     const author: Author = {
       id: id.toString(),
-      username: user.username
+      username: payload.username
     }
     return Promise.resolve({
       data: author
